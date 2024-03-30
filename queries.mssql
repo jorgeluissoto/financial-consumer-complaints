@@ -1,0 +1,4 @@
+SELECT "Product", COUNT(*) AS num_of_products
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+ORDER BY 2 DESC;
