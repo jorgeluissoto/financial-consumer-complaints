@@ -1,4 +1,60 @@
+SELECT *
+FROM "postgres"."consumer_comp".complain;
+
+-- number of complaints by Type
 SELECT "Product", COUNT(*) AS num_of_products
 FROM "postgres"."consumer_comp".complain
 GROUP BY 1
 ORDER BY 2 DESC;
+
+-- most popular submitted method
+SELECT "Submitted_via", COUNT(*) AS most_popular_method
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- total timely responce
+SELECT "Timely_response", COUNT(*) AS total_yes
+FROM "postgres"."consumer_comp".complain
+WHERE "Timely_response" ='Yes'
+GROUP BY 1
+
+-- Do consumer complaints show any seasonal patterns?
+SELECT 
+	COUNT("Date_submitted") AS total_complaints, 
+	EXTRACT(MONTH FROM "Date_submitted") AS month
+FROM "postgres"."consumer_comp".complain
+GROUP BY 2
+ORDER BY 2;
+
+-- Which products present the most complaints? 
+SELECT 
+	"Product", 
+	COUNT(*) AS num_of_products
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- What are its most common issues?
+SELECT 
+	"Issue",
+	COUNT(*) AS num_of_products
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- How are complaints typically resolved?
+SELECT 
+	"Company_response_to_consumer",
+	COUNT(*) AS total
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- Can you learn anything from the complaints with untimely responses?
+SELECT "Timely_response","Product", COUNT(*) AS total_no
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1
+HAVING "Timely_response" ='No';
+
+
