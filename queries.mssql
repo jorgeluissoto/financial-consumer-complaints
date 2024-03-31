@@ -27,6 +27,24 @@ FROM "postgres"."consumer_comp".complain
 GROUP BY 2
 ORDER BY 2;
 
+-- CASE statment to see number of complaints per Q
+SELECT
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") <=3 THEN 1 END) AS Q1,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >3 AND EXTRACT(MONTH FROM "Date_submitted") <=6 THEN 1 END) AS Q2,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >6 and EXTRACT(MONTH FROM "Date_submitted") <=9 THEN 1 END) AS Q3,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >9 THEN 1 END) AS Q4
+FROM "postgres"."consumer_comp".complain;
+
+-- CASE statement to find number of complaints by type and Q
+SELECT
+	"Product",
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") <=3 THEN 'Q1' END) AS Q1,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >3 AND EXTRACT(MONTH FROM "Date_submitted") <=6 THEN 'Q2' END) AS Q2,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >6 and EXTRACT(MONTH FROM "Date_submitted") <=9 THEN 'Q3' END) AS Q3,
+	COUNT (CASE WHEN EXTRACT(MONTH FROM "Date_submitted") >9 THEN 'Q4' END) AS Q4
+FROM "postgres"."consumer_comp".complain
+GROUP BY 1;
+
 -- Which products present the most complaints? 
 SELECT 
 	"Product", 
